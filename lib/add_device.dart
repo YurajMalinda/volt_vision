@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:volt_vision/select_device.dart';
-import 'main.dart'; // Ensure this imports your main.dart file where BluetoothScanner is defined
 
 class AddDevice extends StatelessWidget {
   const AddDevice({super.key});
