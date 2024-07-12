@@ -49,7 +49,7 @@ class AddDevice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const BluetoothScanner(),
+                      builder: (context) => const MyApp(),
                     ),
                   );
                 },
