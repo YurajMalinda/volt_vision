@@ -1,6 +1,5 @@
 import 'package:volt_vision/ble_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -12,7 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -23,71 +22,61 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
   Widget build(BuildContext context) {
+    final BleController controller = Get.put(BleController());
+
     return Scaffold(
       appBar: AppBar(title: const Text("BLE SCANNER")),
-      body: GetBuilder<BleController>(
-        init: BleController(),
-        builder: (BleController controller) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Obx(() => controller.scanning.value
-                    ? CircularProgressIndicator() // Show progress indicator while scanning
-                    : const SizedBox.shrink()), // Hide when not scanning
-                StreamBuilder<List<ScanResult>>(
-                  stream: controller.scanResults,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.isNotEmpty) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              final data = snapshot.data![index];
-                              return Card(
-                                elevation: 2,
-                                child: ListTile(
-                                  title: Text(data.device.name.isEmpty
-                                      ? 'Unknown Device'
-                                      : data.device.name),
-                                  subtitle: Text(data.device.id.id),
-                                  trailing: Text(data.rssi.toString()),
-                                  onTap: () => controller.connectToDevice(data.device),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      } else {
-                        return const Center(child: Text("No Device Found"));
-                      }
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () async {
-                    await controller.scanDevices();
-                  },
-                  child: const Text("SCAN"),
-                ),
-              ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() => controller.scanning.value
+                ? CircularProgressIndicator() // Show progress indicator while scanning
+                : const SizedBox.shrink()), // Hide when not scanning
+            Expanded(
+              child: Obx(() {
+                final scanResults = controller.scanResults;
+                if (scanResults.isNotEmpty) {
+                  return ListView.builder(
+                    itemCount: scanResults.length,
+                    itemBuilder: (context, index) {
+                      final data = scanResults[index];
+                      // Debug print
+                      print(
+                          'Device ID: ${data.device.id.id}, Device Name: ${data.device.name}, RSSI: ${data.rssi}');
+
+                      return Card(
+                        elevation: 2,
+                        child: ListTile(
+                          title: Text(data.device.name.isEmpty
+                              ? 'Unknown Device'
+                              : data.device.name),
+                          subtitle: Text(data.device.id.id),
+                          trailing: Text(data.rssi.toString()),
+                          onTap: () => controller.connectToDevice(data.device),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(child: Text("No Device Found"));
+                }
+              }),
             ),
-          );
-        },
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                await controller.scanDevices();
+              },
+              child: const Text("SCAN"),
+            ),
+          ],
+        ),
       ),
     );
   }
