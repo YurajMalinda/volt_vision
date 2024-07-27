@@ -25,7 +25,9 @@ class BleController extends GetxController {
   void logScanResults() {
     print("Scan Results:");
     for (var result in scanResults) {
-      print('Device ID: ${result.device.id.id}, Device Name: ${result.device.name.isEmpty ? "Unknown Device" : result.device.name}, RSSI: ${result.rssi}');
+      print(
+          'Device ID: ${result.device.id.id}, Device Name: ${result.device.name.isEmpty ? "Unknown Device" : result.device.name}, RSSI: ${result.rssi}');
+      print('############### ' + result.device.name);
     }
   }
 
@@ -58,7 +60,9 @@ class BleController extends GetxController {
 
   Future<void> connectToDevice(BluetoothDevice device) async {
     try {
-      await device.connect(timeout: const Duration(seconds: 30)); // Increase timeout to 30 seconds
+      await device.connect(
+          timeout:
+              const Duration(seconds: 30)); // Increase timeout to 30 seconds
       device.state.listen((state) {
         if (state == BluetoothDeviceState.connecting) {
           print("Device connecting to: ${device.name}");

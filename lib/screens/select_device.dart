@@ -1,4 +1,4 @@
-import 'package:volt_vision/ble_controller.dart';
+import 'package:volt_vision/screens/ble_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,6 +31,7 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("BLE SCANNER")),
+      backgroundColor: Color(0xFF232323),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

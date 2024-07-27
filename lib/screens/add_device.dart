@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:volt_vision/select_device.dart';
+import 'package:volt_vision/screens/select_device.dart';
 
 class AddDevice extends StatelessWidget {
   const AddDevice({super.key});

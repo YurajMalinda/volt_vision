@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:volt_vision/add_device.dart'; // Ensure this path is correct
+import 'package:volt_vision/screens/StartedPage.dart';
+import 'package:volt_vision/screens/add_device.dart'; // Ensure this path is correct
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -23,11 +24,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(20),
+        // padding: const EdgeInsets.all(20),
         decoration: const BoxDecoration(
           color: Color(0xFF232323), // Dark grey color
         ),
-        child: const AddDevice(),
+        child: const StartedPage(),
       ),
     );
   }
